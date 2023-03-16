@@ -7,20 +7,20 @@ const QUESTIONS = [
     {
         id: 1,
         question: 'Qual é o meu nome?',
-        answers: ['Miguel', 'Luis', 'Manoel', 'Ana'],
-        correctAnswer: 'Manoel',
+        answers: ['Miguel', 'Luis', 'Matheus', 'Ana'],
+        correctAnswer: 'Matheus',
     },
     {
         id: 2,
         question: 'Qual minha idade?',
         answers: ['12', '2', '23', '32'],
-        correctAnswer: '23'
+        correctAnswer: '23',
     },
     {
         id: 3,
         question: 'O que eu sou?',
         answers: ['Desenvolvedor', 'Médico', 'Eletricista', 'Jogador de Futebol'],
-        correctAnswer: 'Desenvolvedor'
+        correctAnswer: 'Desenvolvedor',
     }
 ]
 
@@ -37,20 +37,21 @@ export function Quiz() {
         }
     }
 
-const handleAnswerQuestion = (event, question, userAnswer) => {
-    const isCorrectAnswer = question.correctAnswer === userAnswer
+    const handleAnswerQuestion = (event, question, userAnswer) => {
+        const isCorrectAnswer = question.correctAnswer === userAnswer
 
-    const resultClassName = isCorrectAnswer ? S.corrent : S.incorrect
-    event.currentTarget.classList.toggle(resultClassName)
-}
+        const resultClassName = isCorrectAnswer ? S.correct : S.incorrect
 
-const quizSize = QUESTIONS.length
-const navigationButtonText = currentQuestionIndex + 1 == quizSize ? 'Ver Resultado' : 'Proxima Pergunta'
+        event.currentTarget.classList.toggle(resultClassName)
+    }
+
+    const quizSize = QUESTIONS.length
+    const navigationButtonText = currentQuestionIndex + 1 == quizSize ? 'Ver Resultado' : 'Proxima Pergunta'
 
     return (
         <div className={S.container}>
             <div className={S.card}>
-            {isTakingQuiz ? (                <div className={S.quiz}>
+                {isTakingQuiz ? (<div className={S.quiz}>
                     <header>
                         <span>PERGUNTA 1/3</span>
                         <p>{currentQuestion.question}</p>
@@ -59,10 +60,10 @@ const navigationButtonText = currentQuestionIndex + 1 == quizSize ? 'Ver Resulta
                     <ul className={S.answers}>
                         {currentQuestion.answers.map(answer => (
                             <li key={answer} >
-                                <QuestionAnswer 
-                                question={currentQuestion}
-                                answer={answer}
-                                handleAnswerQuestion={handleAnswerQuestion}
+                                <QuestionAnswer
+                                    question={currentQuestion}
+                                    answer={answer}
+                                    handleAnswerQuestion={handleAnswerQuestion}
                                 />
                             </li>
                         ))}
