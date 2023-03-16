@@ -40,7 +40,9 @@ export function Quiz() {
     const handleAnswerQuestion = (event, question, userAnswer) => {
         const isCorrectAnswer = question.correctAnswer === userAnswer
 
-        const resultClassName = isCorrectAnswer ? S.correct : S.incorrect
+    const resultClassName = isCorrectAnswer ? S.correct : S.incorrect
+    event.currentTarget.classList.toggle(resultClassName)
+}
 
         event.currentTarget.classList.toggle(resultClassName)
     }
