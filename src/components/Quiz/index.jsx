@@ -7,8 +7,8 @@ const QUESTIONS = [
     {
         id: 1,
         question: 'Qual é o meu nome?',
-        answers: ['Miguel', 'Luis', 'Matheus', 'Ana'],
-        correctAnswer: 'Matheus',
+        answers: ['Miguel', 'Luis', 'Manoel', 'Ana'],
+        correctAnswer: 'Manoel',
     },
     {
         id: 2,
@@ -40,47 +40,47 @@ export function Quiz() {
     const handleAnswerQuestion = (event, question, userAnswer) => {
         const isCorrectAnswer = question.correctAnswer === userAnswer
 
-    const resultClassName = isCorrectAnswer ? S.correct : S.incorrect
-    event.currentTarget.classList.toggle(resultClassName)
-}
-
+        const resultClassName = isCorrectAnswer ? S.correct : S.incorrect
         event.currentTarget.classList.toggle(resultClassName)
     }
 
-    const quizSize = QUESTIONS.length
-    const navigationButtonText = currentQuestionIndex + 1 == quizSize ? 'Ver Resultado' : 'Proxima Pergunta'
+    event.currentTarget.classList.toggle(resultClassName)
+}
 
-    return (
-        <div className={S.container}>
-            <div className={S.card}>
-                {isTakingQuiz ? (<div className={S.quiz}>
-                    <header>
-                        <span>PERGUNTA 1/3</span>
-                        <p>{currentQuestion.question}</p>
-                    </header>
+const quizSize = QUESTIONS.length
+const navigationButtonText = currentQuestionIndex + 1 == quizSize ? 'Ver Resultado' : 'Proxima Pergunta'
 
-                    <ul className={S.answers}>
-                        {currentQuestion.answers.map(answer => (
-                            <li key={answer} >
-                                <QuestionAnswer
-                                    question={currentQuestion}
-                                    answer={answer}
-                                    handleAnswerQuestion={handleAnswerQuestion}
-                                />
-                            </li>
-                        ))}
-                    </ul>
+return (
+    <div className={S.container}>
+        <div className={S.card}>
+            {isTakingQuiz ? (<div className={S.quiz}>
+                <header>
+                    <span>PERGUNTA 1/3</span>
+                    <p>{currentQuestion.question}</p>
+                </header>
 
-                    <button className={S.navigationBtn} onClick={handleNextQuestion}>
-                        {navigationButtonText}
-                    </button>
-                </div>
-                ) : (
-                    <div>
-                        <h1>Resultado</h1>
-                    </div>
-                )}
+                <ul className={S.answers}>
+                    {currentQuestion.answers.map(answer => (
+                        <li key={answer} >
+                            <QuestionAnswer
+                                question={currentQuestion}
+                                answer={answer}
+                                handleAnswerQuestion={handleAnswerQuestion}
+                            />
+                        </li>
+                    ))}
+                </ul>
+
+                <button className={S.navigationBtn} onClick={handleNextQuestion}>
+                    {navigationButtonText}
+                </button>
             </div>
+            ) : (
+                <div>
+                    <h1>Resultado</h1>
+                </div>
+            )}
         </div>
-    )
+    </div>
+)
 }
