@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { QuestionAnswer } from '../QuestionAnswer'
+import { Result } from '../Result'
+import { ProgressBar } from '../ProgressBar'
 
 import S from './styles.module.scss'
 
@@ -27,7 +29,8 @@ const QUESTIONS = [
 export function Quiz() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
     const [isTakingQuiz, setIsTakingQuiz] = useState(true)
-    const currentQuestion = QUESTIONS[currentQuestionIndex]
+    const [isCurrentQuestionAnswered, setIsCurrentQuestionAnswered] = useState(false)
+    const [correctAnswersCount, setCorrectAnswersCount] = useState(0)
 
     const handleNextQuestion = () => {
         if (currentQuestionIndex + 1 < QUESTIONS.length) {
@@ -35,22 +38,48 @@ export function Quiz() {
         } else {
             setIsTakingQuiz(false)
         }
+
+        setIsCurrentQuestionAnswered(false)
     }
 
-const handleAnswerQuestion = (event, question, userAnswer) => {
-    const isCorrectAnswer = question.correctAnswer === userAnswer
+    const handleTryAgain = () => {
+        setIsTakingQuiz(true)
+        setCurrentQuestionIndex (0)
+        setCorrectAnswersCount (0)
+    }
 
-    const resultClassName = isCorrectAnswer ? S.correct : S.incorrect
-    event.currentTarget.classList.toggle(resultClassName)
-}
+    const handleAnswerQuestion = (event, question, userAnswer) => {
+        if (isCurrentQuestionAnswered) {
+            return
+        }
 
-const quizSize = QUESTIONS.length
-const navigationButtonText = currentQuestionIndex + 1 == quizSize ? 'Ver Resultado' : 'Proxima Pergunta'
+        const isCorrectAnswer = question.correctAnswer === userAnswer
+
+        const resultClassName = isCorrectAnswer ? S.correct : S.incorrect
+
+        event.currentTarget.classList.toggle(resultClassName)
+        
+        if (isCorrectAnswer) {
+            setCorrectAnswersCount(correctAnswersCount + 1)
+        }
+
+        setIsCurrentQuestionAnswered(true)
+    }
+
+console.log(correctAnswersCount)
+
+    const quizSize = QUESTIONS.length
+    const currentQuestion = QUESTIONS[currentQuestionIndex]
+    const navigationButtonText = currentQuestionIndex + 1 == quizSize ? 'Ver Resultado' : 'Proxima Pergunta'
 
     return (
         <div className={S.container}>
             <div className={S.card}>
-            {isTakingQuiz ? (                <div className={S.quiz}>
+                {isTakingQuiz ? (<div className={S.quiz}>
+                    <ProgressBar 
+                        size={quizSize} 
+                        currentStep={currentQuestionIndex + 1} 
+                        />
                     <header>
                         <span>PERGUNTA 1/3</span>
                         <p>{currentQuestion.question}</p>
@@ -59,10 +88,10 @@ const navigationButtonText = currentQuestionIndex + 1 == quizSize ? 'Ver Resulta
                     <ul className={S.answers}>
                         {currentQuestion.answers.map(answer => (
                             <li key={answer} >
-                                <QuestionAnswer 
-                                question={currentQuestion}
-                                answer={answer}
-                                handleAnswerQuestion={handleAnswerQuestion}
+                                <QuestionAnswer
+                                    question={currentQuestion}
+                                    answer={answer}
+                                    handleAnswerQuestion={handleAnswerQuestion}
                                 />
                             </li>
                         ))}
@@ -73,9 +102,11 @@ const navigationButtonText = currentQuestionIndex + 1 == quizSize ? 'Ver Resulta
                     </button>
                 </div>
                 ) : (
-                    <div>
-                        <h1>Resultado</h1>
-                    </div>
+                    <Result 
+                    correctAnswersCount={correctAnswersCount}
+                    quizSize={quizSize}
+                    handleTryAgain={handleTryAgain} 
+                    />
                 )}
             </div>
         </div>
