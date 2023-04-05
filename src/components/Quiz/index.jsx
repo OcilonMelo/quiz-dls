@@ -16,13 +16,13 @@ const QUESTIONS = [
         id: 2,
         question: 'Qual minha idade?',
         answers: ['12', '2', '23', '32'],
-        correctAnswer: '23'
+        correctAnswer: '23',
     },
     {
         id: 3,
         question: 'O que eu sou?',
         answers: ['Desenvolvedor', 'Médico', 'Eletricista', 'Jogador de Futebol'],
-        correctAnswer: 'Desenvolvedor'
+        correctAnswer: 'Desenvolvedor',
     }
 ]
 
@@ -48,25 +48,12 @@ export function Quiz() {
         setCorrectAnswersCount (0)
     }
 
-    const handleAnswerQuestion = (event, question, userAnswer) => {
-        if (isCurrentQuestionAnswered) {
-            return
-        }
+const handleAnswerQuestion = (event, question, userAnswer) => {
+    const isCorrectAnswer = question.correctAnswer === userAnswer
 
-        const isCorrectAnswer = question.correctAnswer === userAnswer
-
-        const resultClassName = isCorrectAnswer ? S.correct : S.incorrect
-
-        event.currentTarget.classList.toggle(resultClassName)
-        
-        if (isCorrectAnswer) {
-            setCorrectAnswersCount(correctAnswersCount + 1)
-        }
-
-        setIsCurrentQuestionAnswered(true)
-    }
-
-console.log(correctAnswersCount)
+    const resultClassName = isCorrectAnswer ? S.correct : S.incorrect
+    event.currentTarget.classList.toggle(resultClassName)
+}
 
     const quizSize = QUESTIONS.length
     const currentQuestion = QUESTIONS[currentQuestionIndex]
@@ -75,11 +62,7 @@ console.log(correctAnswersCount)
     return (
         <div className={S.container}>
             <div className={S.card}>
-                {isTakingQuiz ? (<div className={S.quiz}>
-                    <ProgressBar 
-                        size={quizSize} 
-                        currentStep={currentQuestionIndex + 1} 
-                        />
+            {isTakingQuiz ? (                <div className={S.quiz}>
                     <header>
                         <span>PERGUNTA 1/3</span>
                         <p>{currentQuestion.question}</p>
@@ -88,10 +71,10 @@ console.log(correctAnswersCount)
                     <ul className={S.answers}>
                         {currentQuestion.answers.map(answer => (
                             <li key={answer} >
-                                <QuestionAnswer
-                                    question={currentQuestion}
-                                    answer={answer}
-                                    handleAnswerQuestion={handleAnswerQuestion}
+                                <QuestionAnswer 
+                                question={currentQuestion}
+                                answer={answer}
+                                handleAnswerQuestion={handleAnswerQuestion}
                                 />
                             </li>
                         ))}
@@ -102,11 +85,9 @@ console.log(correctAnswersCount)
                     </button>
                 </div>
                 ) : (
-                    <Result 
-                    correctAnswersCount={correctAnswersCount}
-                    quizSize={quizSize}
-                    handleTryAgain={handleTryAgain} 
-                    />
+                    <div>
+                        <h1>Resultado</h1>
+                    </div>
                 )}
             </div>
         </div>
